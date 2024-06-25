@@ -4,7 +4,7 @@ from pygame import *
 window = display.set_mode((1000, 600))
 display.set_caption("Догонялки-Убегалки")
 background = transform.scale(image.load("Cave_background.png"), (1000, 600))
-
+#Комментарий
 
 # данные о спрайте-картинке
 x1 = 100
