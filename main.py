@@ -41,7 +41,8 @@ while run:
 
     keys_pressed = key.get_pressed()
 
-    if abs(x1 - x2) < 100 and abs(y1 - y2) < 100:
+
+    if abs(x1 - x2) < 50 and abs(y1 - y2) < 100:
         if color == (0, 0, 255):
             window.blit(win_b,(200,200))
             color = (250, 192, 203)
