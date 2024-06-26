@@ -4,3 +4,4 @@
 # Ресурсы
 - Python 3.11
 - PyGame
+- Pygame-menu
