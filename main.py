@@ -3,7 +3,6 @@ import pygame
 
 def game(IsAI):
     window = pygame.display.set_mode((1000, 600))
-    pygame.display.set_caption("Догонялки-Убегалки")
     background = pygame.transform.scale(pygame.image.load("Cave_background.png"), (1000, 600))
     #Комментарий
 
@@ -39,6 +38,8 @@ def game(IsAI):
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 run = False
+                pygame.quit()
+                exit()
 
         keys_pressed = pygame.key.get_pressed()
 
