@@ -1,82 +1,151 @@
-import pygame.draw
 from pygame import *
 
+font.init()
+font = font.Font(None,50)
 window = display.set_mode((1000, 600))
 display.set_caption("Догонялки-Убегалки")
-background = transform.scale(image.load("Cave_background.png"), (1000, 600))
-
-
-# данные о спрайте-картинке
-x1 = 100
-y1 = 200
-x2 = 800
-y2 = 300
-count_exp = 0
-sprite1 = transform.scale(image.load('BlueGhost_1.png'), (100, 100))
-sprite2 = transform.scale(image.load('PinkGhost_1.png'), (100, 100))
-speed = 10
-# игровой цикл
-run = True
+background = transform.scale(image.load("background.png"), (1000, 600))
 clock = time.Clock()
 FPS = 60
-color = (0,0,255)
-font.init()
-font = font.Font(None,70)
-win_b = font.render(
-    'BLUE WIN"S ', True, (0,0,255)
-)
-win_p = font.render(
-    'PINCK WIN"S ', True, (250, 192, 203)
-)
+run = True
+finish = False
+width = 100
+height = 100
+score = [0,0]
 
-#счётчик очков
-while run:     
-    window.blit(background, (0, 0))
-    window.blit(sprite1, (x1, y1))
-    window.blit(sprite2, (x2, y2))
-    pygame.draw.circle(background, color, (40, 40), 20)
+class BlueGhost:
+    def __init__(self, window, transfotm=None):
+        self.index = 0
+        self.move_right = [
+    transform.scale(image.load('BlueGhost_1.png'),(width, height)),
+    transform.scale(image.load('BlueGhost_2.png'),(width, height)),
+    transform.scale(image.load('BlueGhost_3.png'),(width, height)),
+    transform.scale(image.load('BlueGhost_1.png'),(width, height)),
+    transform.scale(image.load('BlueGhost_2.png'),(width, height)),
+    transform.scale(image.load('BlueGhost_3.png'),(width, height))
+]
+        self.move_left = [
+    transform.scale(image.load('BlueGhost_1(L).png'),(width, height)),
+    transform.scale(image.load('BlueGhost_2(L).png'),(width, height)),
+    transform.scale(image.load('BlueGhost_3(L).png'),(width, height)),
+    transform.scale(image.load('BlueGhost_1(L).png'), (width, height)),
+    transform.scale(image.load('BlueGhost_2(L).png'), (width, height)),
+    transform.scale(image.load('BlueGhost_3(L).png'), (width, height))
+]
+        self.window = window
+        self.image = self.move_right[self.index]
+        self.rect = self.image.get_rect(center=(100,100))
+        self.speed = 5
+        self.Faceid = True
+
+    def update(self):
+        if self.Faceid:
+            self.image = self.move_right[self.index // 5]
+        else:
+            self.image = self.move_left[self.index // 5]
+        keys_pressed = key.get_pressed()
+        if keys_pressed[K_a] and self.rect.x > 5:
+            self.rect.x -= self.speed
+            self.image = self.move_left[self.index // 5]
+            self.Faceid = False
+        if keys_pressed[K_d] and self.rect.x < 895:
+            self.rect.x += self.speed
+            self.image = self.move_right[self.index // 5]
+            self.Faceid = True
+        if keys_pressed[K_w] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys_pressed[K_s] and self.rect.y < 495:
+            self.rect.y += self.speed
+        if self.index < 25:
+            self.index += 1
+        else:
+            self.index = 0
+        self.window.blit(self.image, self.rect)
+
+class PinkGhost:
+    def __init__(self, window):
+        self.index = 0
+        self.move_right = [
+        transform.scale(image.load('PinkGhost_1.png'), (width, height)),
+        transform.scale(image.load('PinkGhost_2.png'), (width, height)),
+        transform.scale(image.load('PinkGhost_3.png'), (width, height)),
+        transform.scale(image.load('PinkGhost_1.png'), (width, height)),
+        transform.scale(image.load('PinkGhost_2.png'), (width, height)),
+        transform.scale(image.load('PinkGhost_3.png'), (width, height))
+]
+        self.move_left = [
+        transform.scale(image.load('PinkGhost_1(L).png'),(width, height)),
+        transform.scale(image.load('PinkGhost_2(L).png'),(width, height)),
+        transform.scale(image.load('PinkGhost_3(L).png'),(width, height)),
+        transform.scale(image.load('PinkGhost_1(L).png'), (width, height)),
+        transform.scale(image.load('PinkGhost_2(L).png'), (width, height)),
+        transform.scale(image.load('PinkGhost_3(L).png'), (width, height))
+]
+        self.window = window
+        self.image = self.move_right[self.index]
+        self.rect = self.image.get_rect(center=(600,100))
+        self.speed = 5
+        self.Faceid = True
+
+    def update(self):
+        if self.Faceid:
+            self.image = self.move_right[self.index // 5]
+        else:
+            self.image = self.move_left[self.index // 5]
+        keys_pressed = key.get_pressed()
+        if keys_pressed[K_LEFT] and self.rect.x > 5:
+            self.rect.x -= self.speed
+            self.image = self.move_left[self.index // 5]
+            self.Faceid = False
+        if keys_pressed[K_RIGHT] and self.rect.x < 895:
+            self.rect.x += self.speed
+            self.image = self.move_right[self.index // 5]
+            self.Faceid = True
+        if keys_pressed[K_UP] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys_pressed[K_DOWN] and self.rect.y < 495:
+            self.rect.y += self.speed
+        if self.index < 25:
+            self.index += 1
+        else:
+            self.index = 0
+        self.window.blit(self.image, self.rect)
+
+
+ghost_b = BlueGhost(window)
+ghost_p = PinkGhost(window)
+
+color = (176,232,240)
+def ghost_collide():
+    if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (176, 232, 240):
+        score[0] += 1
+        Ghosts_respawn()
+    if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (240, 184, 248):
+        score[1] += 1
+        Ghosts_respawn()
+
+def Ghosts_respawn():
+    ghost_b.rect.x = 100
+    ghost_p.rect.x = 600
+    ghost_b.rect.y = 100
+    ghost_p.rect.y = 100
+while run:
     for e in event.get():
         if e.type == QUIT:
             run = False
 
-    keys_pressed = key.get_pressed()
-
-    if abs(x1 - x2) < 100 and abs(y1 - y2) < 100:
-        if color == (0, 0, 255):
-            window.blit(win_b,(200,200))
-            color = (250, 192, 203)
+    draw.circle(background, color, (40, 40), 20)
+    if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85:
+        if color == (176, 232, 240):
+            color = (240, 184, 248)
         else:
-            color = (0, 0, 255)
-            window.blit(win_p, (200,200))
-        x1 = 100
-        y1 = 200
-        x2 = 800
-        y2 = 300
-    #if keys_pressed [K_h]:
-
-    if keys_pressed [K_r]:
-        x1 = 100
-        y1 = 300
-        x2 = 300
-        y2 = 300
-        color = (0, 0, 255)
-    if keys_pressed[K_a] and x1 > 5:
-        x1 -= speed
-    if keys_pressed[K_d] and x1 < 895:
-        x1 += speed
-    if keys_pressed[K_w] and y1 > 5:
-        y1 -= speed
-    if keys_pressed[K_s] and y1 < 495:
-        y1 += speed
-
-    if keys_pressed[K_LEFT] and x2 > 5:
-        x2 -= speed
-    if keys_pressed[K_RIGHT] and x2 < 895:
-        x2 += speed
-    if keys_pressed[K_UP] and y2 > 5:
-        y2 -= speed
-    if keys_pressed[K_DOWN] and y2 < 495:
-        y2 += speed
-
+            color = (176, 232, 240)
+    win = font.render(str('blue count') + ' ' + str(score[0]) + ':' + str(score[1]) + ' ' + str('pink count'), True,(255, 255, 255))
+    window.blit(background, (0,0))
+    ghost_collide()
+    window.blit(win,(500,500))
+    ghost_b.update()
+    ghost_p.update()
     display.update()
     clock.tick(FPS)
+
