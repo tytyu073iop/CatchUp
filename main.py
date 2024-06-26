@@ -3,13 +3,18 @@ import pygame
 
 IsFullScreen = False
 IsVSync = False
+Resolution = (1000, 600)
 def game(IsAI):
+    global Resolution
+    print(pygame.display.get_desktop_sizes())
+    if IsFullScreen:
+        Resolution = pygame.display.get_desktop_sizes()[0]
     print(IsAI, IsFullScreen, IsVSync)
     flags = 0
     if IsFullScreen:
         flags |= pygame.FULLSCREEN
-    window = pygame.display.set_mode((1920, 1080), flags, vsync=int(IsVSync))
-    background = pygame.transform.scale(pygame.image.load("Cave_background.png"), (1920, 1080))
+    window = pygame.display.set_mode(Resolution, flags, vsync=int(IsVSync))
+    background = pygame.transform.scale(pygame.image.load("Cave_background.png"), Resolution)
     #Комментарий
 
     # данные о спрайте-картинке
