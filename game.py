@@ -1,7 +1,9 @@
 import pygame.draw
 import pygame
 import pygame_menu
+import pygame_menu.controls as ctrl
 
+speed = 5
 pygame.font.init()
 font = pygame.font.Font(None,50)
 clock = pygame.time.Clock()
@@ -37,7 +39,6 @@ class BlueGhost:
         self.window = window
         self.image = self.move_right[self.index]
         self.rect = self.image.get_rect(center=(100,100))
-        self.speed = 5
         self.Faceid = True
 
     def update(self):
@@ -47,17 +48,17 @@ class BlueGhost:
             self.image = self.move_left[self.index // 5]
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_a] and self.rect.x > 5:
-            self.rect.x -= self.speed
+            self.rect.x -= speed
             self.image = self.move_left[self.index // 5]
             self.Faceid = False
         if keys_pressed[pygame.K_d] and self.rect.x < 895:
-            self.rect.x += self.speed
+            self.rect.x += speed
             self.image = self.move_right[self.index // 5]
             self.Faceid = True
         if keys_pressed[pygame.K_w] and self.rect.y > 5:
-            self.rect.y -= self.speed
+            self.rect.y -= speed
         if keys_pressed[pygame.K_s] and self.rect.y < 495:
-            self.rect.y += self.speed
+            self.rect.y += speed
         if self.index < 25:
             self.index += 1
         else:
@@ -86,7 +87,6 @@ class PinkGhost:
         self.window = window
         self.image = self.move_right[self.index]
         self.rect = self.image.get_rect(center=(600,100))
-        self.speed = 5
         self.Faceid = True
 
     def update(self):
@@ -96,17 +96,17 @@ class PinkGhost:
             self.image = self.move_left[self.index // 5]
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_LEFT] and self.rect.x > 5:
-            self.rect.x -= self.speed
+            self.rect.x -= speed
             self.image = self.move_left[self.index // 5]
             self.Faceid = False
         if keys_pressed[pygame.K_RIGHT] and self.rect.x < 895:
-            self.rect.x += self.speed
+            self.rect.x += speed
             self.image = self.move_right[self.index // 5]
             self.Faceid = True
         if keys_pressed[pygame.K_UP] and self.rect.y > 5:
-            self.rect.y -= self.speed
+            self.rect.y -= speed
         if keys_pressed[pygame.K_DOWN] and self.rect.y < 495:
-            self.rect.y += self.speed
+            self.rect.y += speed
         if self.index < 25:
             self.index += 1
         else:
