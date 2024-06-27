@@ -33,7 +33,7 @@ class BlueGhost:
         self.width = 100
         self.height = 100
         self.move_right = [
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(self.width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
