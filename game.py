@@ -1,12 +1,8 @@
-# <<<<<<< HEAD
 import pygame.draw
 import pygame
 
 pygame.font.init()
 font = pygame.font.Font(None,50)
-# window = display.set_mode((1000, 600))
-# display.set_caption("Догонялки-Убегалки")
-# background = transform.scale(image.load("background.png"), (1000, 600))
 clock = pygame.time.Clock()
 FPS = 60
 run = True
@@ -116,12 +112,6 @@ class PinkGhost:
             self.index = 0
         self.window.blit(self.image, self.rect)
 
-
-
-
-# =======
-
-
 def game(IsAI):
     global Resolution
     print(pygame.display.get_desktop_sizes())
@@ -133,7 +123,6 @@ def game(IsAI):
         flags |= pygame.FULLSCREEN
     window = pygame.display.set_mode(Resolution, flags, vsync=int(IsVSync))
     background = pygame.transform.scale(pygame.image.load("Cave_background.png"), Resolution)
-    #Комментарий
 
     # данные о спрайте-картинке
     x1 = 100
@@ -158,12 +147,12 @@ def game(IsAI):
         'PINCK WIN"S ', True, (250, 192, 203)
     )
 
-    #счётчик очков
-    # insert kolya here
     ghost_b = BlueGhost(window)
     ghost_p = PinkGhost(window)
 
     color = (176,232,240)
+
+    # счётчик очков
     def ghost_collide():
         if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (176, 232, 240):
             score[0] += 1
@@ -196,10 +185,5 @@ def game(IsAI):
         ghost_p.update()
         pygame.display.update()
         clock.tick(FPS)
-        #end insert
     pygame.quit()
     exit()
-
-# for just start
-# game(False)
-# >>>>>>> Pause_menu
