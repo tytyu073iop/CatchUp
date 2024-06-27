@@ -177,6 +177,7 @@ def game(IsAI):
     menu = pygame_menu.Menu('Pause', Resolution[0], Resolution[1])
     menu.disable()
     menu.add.button('continue', continue_button)
+    menu.add.button('Exit', pygame_menu.events.EXIT)
 
     while True:
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
