@@ -2,13 +2,16 @@
 import pygame.draw
 import pygame
 
+pygame.mixer.init()
+pygame.mixer.music.load('Смешарики - Тема погони.mp3')
+pygame.mixer.music.play(1)
 pygame.font.init()
 font = pygame.font.Font(None,50)
 # window = display.set_mode((1000, 600))
 # display.set_caption("Догонялки-Убегалки")
 # background = transform.scale(image.load("background.png"), (1000, 600))
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 45
 run = True
 finish = False
 width = 100
@@ -26,19 +29,24 @@ class BlueGhost:
         self.index = 0
         self.move_right = [
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(width, height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_3.png'),(width, height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_3.png'),(width, height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
+
 ]
         self.move_left = [
     pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'),(width, height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_3(L).png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (width, height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_3(L).png'), (width, height))
+    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (width, height)),
 ]
         self.window = window
         self.image = self.move_right[self.index]
@@ -65,7 +73,7 @@ class BlueGhost:
             self.rect.y -= self.speed
         if keys_pressed[pygame.K_s] and self.rect.y < self.lock_y - 100:
             self.rect.y += self.speed
-        if self.index < 25:
+        if self.index < 39:
             self.index += 1
         else:
             self.index = 0
@@ -76,19 +84,23 @@ class PinkGhost:
         self.index = 0
         self.move_right = [
         pygame.transform.scale(pygame.image.load('PinkGhost_1.png'), (width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_2.png'), (width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_1.png'), (width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_3.png'), (width, height)),
         pygame.transform.scale(pygame.image.load('PinkGhost_3.png'), (width, height)),
         pygame.transform.scale(pygame.image.load('PinkGhost_1.png'), (width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_2.png'), (width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_3.png'), (width, height))
+        pygame.transform.scale(pygame.image.load('PinkGhost_1.png'), (width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_3.png'), (width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_3.png'), (width, height)),
 ]
         self.move_left = [
         pygame.transform.scale(pygame.image.load('PinkGhost_1(L).png'),(width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_2(L).png'),(width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_3(L).png'),(width, height)),
         pygame.transform.scale(pygame.image.load('PinkGhost_1(L).png'), (width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_2(L).png'), (width, height)),
-        pygame.transform.scale(pygame.image.load('PinkGhost_3(L).png'), (width, height))
+        pygame.transform.scale(pygame.image.load('PinkGhost_3(L).png'),(width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_3(L).png'), (width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_1(L).png'),(width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_1(L).png'), (width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_3(L).png'),(width, height)),
+        pygame.transform.scale(pygame.image.load('PinkGhost_3(L).png'), (width, height)),
 ]
         self.window = window
         self.image = self.move_right[self.index]
@@ -115,7 +127,7 @@ class PinkGhost:
             self.rect.y -= self.speed
         if keys_pressed[pygame.K_DOWN] and self.rect.y < self.lock_y - 100:
             self.rect.y += self.speed
-        if self.index < 25:
+        if self.index < 39:
             self.index += 1
         else:
             self.index = 0
@@ -158,14 +170,16 @@ def game(IsAI):
     # insert kolya here
     ghost_b = BlueGhost(window)
     ghost_p = PinkGhost(window)
-
+    kick = pygame.mixer.Sound('for-karl_-made-with-Voicemod.ogg')
     color = (176,232,240)
     def ghost_collide():
         if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (176, 232, 240):
             score[0] += 1
+            kick.play()
             Ghosts_respawn()
         if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (240, 184, 248):
             score[1] += 1
+            kick.play()
             Ghosts_respawn()
 
     def Ghosts_respawn():
@@ -189,7 +203,6 @@ def game(IsAI):
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 run = False
-
         pygame.draw.circle(background, color, (40, 40), 20)
         if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85:
             if color == (176, 232, 240):
