@@ -1,5 +1,6 @@
 import pygame.draw
 import pygame
+import pygame_menu
 
 pygame.font.init()
 font = pygame.font.Font(None,50)
@@ -166,23 +167,46 @@ def game(IsAI):
         ghost_p.rect.x = 600
         ghost_b.rect.y = 100
         ghost_p.rect.y = 100
-    while run:
-        for e in pygame.event.get():
-            if e.type == pygame.QUIT:
-                run = False
+    #menu config
+    def continue_button():
+        nonlocal menu
+        global run
+        run = True
+        menu.disable()
+        print('continue')
+    menu = pygame_menu.Menu('Pause', Resolution[0], Resolution[1])
+    menu.disable()
+    menu.add.button('continue', continue_button)
 
-        pygame.draw.circle(background, color, (40, 40), 20)
-        if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85:
-            if color == (176, 232, 240):
-                color = (240, 184, 248)
-            else:
-                color = (176, 232, 240)
-        win = font.render(str('blue count') + ' ' + str(score[0]) + ':' + str(score[1]) + ' ' + str('pink count'), True,(255, 255, 255))
-        window.blit(background, (0,0))
-        ghost_collide()
-        window.blit(win,(500,500))
-        ghost_b.update()
-        ghost_p.update()
+    while True:
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            menu.enable()
+            menu.mainloop(window)
+            print('pressed',menu.is_enabled())
+            run = not menu.is_enabled()
+
+        if run:
+            for e in pygame.event.get():
+                if e.type == pygame.QUIT:
+                    run = False
+                    pygame.quit()
+                    exit()
+            pygame.draw.circle(background, color, (40, 40), 20)
+            if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85:
+                if color == (176, 232, 240):
+                    color = (240, 184, 248)
+                else:
+                    color = (176, 232, 240)
+            win = font.render(str('blue count') + ' ' + str(score[0]) + ':' + str(score[1]) + ' ' + str('pink count'), True,(255, 255, 255))
+            window.blit(background, (0,0))
+            ghost_collide()
+            window.blit(win,(500,500))
+            ghost_b.update()
+            ghost_p.update()
+        if menu.is_enabled():
+            menu.update(pygame.event.get())
+            menu.draw(window)
+            # print('menu enabled')
         pygame.display.update()
         clock.tick(FPS)
     pygame.quit()
