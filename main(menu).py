@@ -31,4 +31,5 @@ for i in range (1, 21):
 menu.add.selector('Чуствительность', lr, onchange=changeSpeed, default=0)
 pygame.display.set_caption("Догонялки-Убегалки")
 menu.add.button('two players', game.game, False)
+# отвечает за запуск меню
 menu.mainloop(surface)

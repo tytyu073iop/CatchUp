@@ -23,9 +23,11 @@ Blue_ghost_spawn_point_x = 100
 Pink_ghost_spawn_point_x = 600
 Blue_ghost_spawn_point_y = 100
 Pink_ghost_spawn_point_y = 100
+
 class BlueGhost:
     def __init__(self, window, transfotm=None):
         self.index = 0
+        # images for animation
         self.move_right = [
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
@@ -53,6 +55,7 @@ class BlueGhost:
         self.Faceid = True
         self.lock_x, self.lock_y = window.get_size()
 
+    # this code handles the movement and animation of a game object based on user input from the arrow keys.
     def update(self):
         if self.Faceid:
             self.image = self.move_right[self.index // 5]
@@ -77,6 +80,7 @@ class BlueGhost:
             self.index = 0
         self.window.blit(self.image, self.rect)
 
+# same as previous
 class PinkGhost:
     def __init__(self, window):
         self.index = 0
@@ -130,19 +134,18 @@ class PinkGhost:
             self.index = 0
         self.window.blit(self.image, self.rect)
 
+# starts from menu
 def game(IsAI):
     global Resolution
-    print(pygame.display.get_desktop_sizes())
     if IsFullScreen:
         Resolution = pygame.display.get_desktop_sizes()[0]
-    print(IsAI, IsFullScreen, IsVSync)
     flags = 0
     if IsFullScreen:
         flags |= pygame.FULLSCREEN
     window = pygame.display.set_mode(Resolution, flags, vsync=int(IsVSync))
     background = pygame.transform.scale(pygame.image.load("Cave_background.png"), Resolution)
 
-    # игровой цикл
+    # предигровая настройка
     run = True
     clock = pygame.time.Clock()
     FPS = 60
@@ -202,6 +205,7 @@ def game(IsAI):
     menu.add.button('continue', continue_button)
     menu.add.button('Exit', pygame_menu.events.EXIT)
 
+    # game cycle
     while True:
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
             menu.enable()
