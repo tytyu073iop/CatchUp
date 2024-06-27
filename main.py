@@ -33,25 +33,25 @@ class BlueGhost:
         self.width = 100
         self.height = 100
         self.move_right = [
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (self.width, self.height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
 
 ]
         self.move_left = [
-    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'),(self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'),(self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (self.width, self.height)),
-    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (self.width, self.height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_2(L).png'), (width, height)),
 ]
         self.window = window
         self.image = self.move_right[self.index]
