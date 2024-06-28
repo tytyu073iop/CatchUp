@@ -25,6 +25,17 @@ class TestScore(unittest.TestCase):
         self.assertEqual(self.score.scores[0][MemberType.ADMIN.value], 0)
         self.assertEqual(self.score.scores[0][MemberType.CUSTOMER.value], 7)
 
+    def test_multiple_saves(self):
+        self.score.increase(5, MemberType.ADMIN.value)
+        self.score.save()
+        self.score.increase(3, MemberType.CUSTOMER.value)
+        self.score.save()
+        self.assertEqual(len(self.score.scores), 2)
+        self.assertEqual(self.score.scores[0][MemberType.ADMIN.value], 5)
+        self.assertEqual(self.score.scores[0][MemberType.CUSTOMER.value], 0)
+        self.assertEqual(self.score.scores[1][MemberType.ADMIN.value], 5)
+        self.assertEqual(self.score.scores[1][MemberType.CUSTOMER.value], 3)
+
     def test_saveToFile(self):
         self.score.increase(3, MemberType.ADMIN.value)
         self.score.save()
@@ -32,6 +43,16 @@ class TestScore(unittest.TestCase):
         with open('test_scores.json', 'r') as f:
             saved_scores = json.load(f)
         self.assertEqual(saved_scores, [self.score.score])
+
+    def test_multiple_saves_to_file(self):
+        self.score.increase(2, MemberType.ADMIN.value)
+        self.score.save()
+        self.score.save()
+        self.score.saveToFile('test_scores.json')
+        self.score.saveToFile('test_scores.json')
+        with open('test_scores.json', 'r') as f:
+            saved_scores = json.load(f)
+        self.assertEqual(saved_scores, self.score.scores)
 
     def test_loadFromFile(self):
         self.score.increase(2, MemberType.CUSTOMER.value)

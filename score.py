@@ -1,5 +1,6 @@
 import json
 import os
+import copy
 
 class Score:
     def __init__(self, members, filename = ''):
@@ -18,7 +19,7 @@ class Score:
     def increase(self, n, member):
         self.score[member] += n
     def save(self):
-        self.scores.append(self.score)
+        self.scores.append(copy.deepcopy(self.score))
     def saveToFile(self, filename = ''):
         with open(filename if filename != '' else self.filename, 'w') as file:
             json.dump(self.scores, file)
