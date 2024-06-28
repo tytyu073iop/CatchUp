@@ -2,6 +2,13 @@ import pygame.draw
 import pygame
 import pygame_menu
 import pygame_menu.controls as ctrl
+import judge
+import score
+from enum import Enum
+
+class TeamMember(Enum):
+    blue = 'Blue'
+    pink = 'Pink'
 
 speed = 5
 volume = 1.0
@@ -16,7 +23,6 @@ run = True
 finish = False
 width = 100
 height = 100
-score = [0,0]
 IsFullScreen = False
 IsVSync = False
 Resolution = (1000, 600)
@@ -145,6 +151,8 @@ class PinkGhost:
 
 # starts from menu
 def game(IsAI):
+    sco = score.Score((TeamMember.blue.value, TeamMember.pink.value), 'score.json')
+    jud = judge.Judge(sco)
     pygame.mixer.music.set_volume(volume)
     global Resolution
     if IsFullScreen:
@@ -177,17 +185,17 @@ def game(IsAI):
     # счётчик очков
     def ghost_collide():
         if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color_c == (176, 232, 240):
-            score[0] += 5
+            jud.increase(TeamMember.blue.value, 5)
             kick.play()
             Ghosts_respawn()
         if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color_c == (240, 184, 248):
-            score[1] += 5
+            jud.increase(TeamMember.pink.value, 5)
             kick.play()
             Ghosts_respawn()
 
     def Ghosts_respawn():
         global game_status
-        if score[1] >= 20 or score[0] >= 20:
+        if sco.score[TeamMember.pink.value] >= 20 or sco.score[TeamMember.blue.value] >= 20:
             game_status = False
         if IsFullScreen:
             ghost_b.rect.x = 500
@@ -236,15 +244,17 @@ def game(IsAI):
                 if e.type == pygame.QUIT:
                     run = False
                 if e.type == pygame.USEREVENT and color_c == (176, 232, 240):
-                    score[1] += 1
+                    jud.increase(TeamMember.pink.value, 1)
                 if color_c == (240, 184, 248) and e.type == pygame.USEREVENT:
-                    score[0] += 1
+                    jud.increase(TeamMember.blue.value, 1)
                 if e.type == pygame.KEYDOWN:
                     global game_status
                     if game_status == False:
+                        sco.save()
+                        sco.saveToFile()
                         game_status = True
-                        score[1] = 0
-                        score[0] = 0
+                        sco.score[TeamMember.blue.value] = 0
+                        sco.score[TeamMember.pink.value] = 0
             pygame.draw.circle(background, color_c, (40, 40), 20)
             if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85:
                 if color_c == (176, 232, 240):
@@ -253,7 +263,7 @@ def game(IsAI):
                     color_c = (176, 232, 240)
             if game_status == True:
                 counter = font.render(
-                    str('blue count') + ' ' + str(score[0]) + ':' + str(score[1]) + ' ' + str('pink count'), True,
+                    str('blue count') + ' ' + str(sco.score[TeamMember.blue.value]) + ':' + str(sco.score[TeamMember.pink.value]) + ' ' + str('pink count'), True,
                     (255, 255, 255))
                 window.blit(background, (0, 0))
                 ghost_collide()
@@ -261,10 +271,10 @@ def game(IsAI):
                 ghost_b.update()
                 ghost_p.update()
             if game_status == False:
-                if score[0] >= 20:
+                if sco.score[TeamMember.blue.value] >= 20:
                     winner_b = font.render('Blue Wins', True, (176, 232, 240))
                     window.blit(winner_b, (winner_location_x, winner_location_y))
-                elif score[1] >= 20:
+                elif sco.score[TeamMember.pink.value] >= 20:
                     winner_p = font.render('Pink Wins', True, (240, 184, 248))
                     window.blit(winner_p, (winner_location_x, winner_location_y))
         if menu.is_enabled():
