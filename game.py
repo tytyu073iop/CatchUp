@@ -4,6 +4,7 @@ import pygame_menu
 import pygame_menu.controls as ctrl
 
 speed = 5
+volume = 1.0
 pygame.mixer.init()
 pygame.mixer.music.load('Смешарики - Тема погони.mp3')
 pygame.mixer.music.play(1)
@@ -136,6 +137,7 @@ class PinkGhost:
 
 # starts from menu
 def game(IsAI):
+    pygame.mixer.music.set_volume(volume)
     global Resolution
     if IsFullScreen:
         Resolution = pygame.display.get_desktop_sizes()[0]
@@ -162,6 +164,7 @@ def game(IsAI):
     ghost_b = BlueGhost(window)
     ghost_p = PinkGhost(window)
     kick = pygame.mixer.Sound('for-karl_-made-with-Voicemod.ogg')
+    kick.set_volume(volume)
     color = (176,232,240)
 
     # счётчик очков
