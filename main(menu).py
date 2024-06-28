@@ -1,6 +1,7 @@
 import pygame
 import pygame_menu
 import game
+import json
 
 pygame.init()
 pygame.mixer.init()
@@ -41,6 +42,13 @@ ln = []
 for i in range (1, 11):
     ln.append(str(i))
 menu.add.selector('Звук', ln, onchange=changeVolume, default=8)
+
+table = menu.add.table()
+sc = json.load(open('score.json', 'r'))
+table.add_row(['Blue', 'Pink'])
+for i in sc:
+    table.add_row([str(i['Blue']), str(i['Pink'])])
+
 pygame.display.set_caption("Догонялки-Убегалки")
 menu.add.button('two players', game.game, False)
 # отвечает за запуск меню
