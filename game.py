@@ -24,13 +24,16 @@ Blue_ghost_spawn_point_x = 100
 Pink_ghost_spawn_point_x = 600
 Blue_ghost_spawn_point_y = 100
 Pink_ghost_spawn_point_y = 100
+color = (0,0,255)
+game_status = True
 
 class BlueGhost:
     def __init__(self, window, transfotm=None):
         self.index = 0
-        # images for animation
+        self.width = 100
+        self.height = 100
         self.move_right = [
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(self.width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
@@ -79,6 +82,9 @@ class BlueGhost:
             self.index += 1
         else:
             self.index = 0
+        if IsFullScreen:
+            self.height = 50  # height * 600/y
+            self.width = 50  # width * 1000/x
         self.window.blit(self.image, self.rect)
 
 # same as previous
@@ -110,6 +116,8 @@ class PinkGhost:
         self.rect = self.image.get_rect(center=(Pink_ghost_spawn_point_x,Pink_ghost_spawn_point_y))
         self.Faceid = True
         self.lock_x, self.lock_y = window.get_size()
+
+
 
     def update(self):
         if self.Faceid:
@@ -151,7 +159,6 @@ def game(IsAI):
     run = True
     clock = pygame.time.Clock()
     FPS = 60
-    color = (0,0,255)
     pygame.font.init()
     font = pygame.font.Font(None,50)
     win_b = font.render(
@@ -165,20 +172,23 @@ def game(IsAI):
     ghost_p = PinkGhost(window)
     kick = pygame.mixer.Sound('for-karl_-made-with-Voicemod.ogg')
     kick.set_volume(volume)
-    color = (176,232,240)
+    color_c = (176,232,240)
 
     # счётчик очков
     def ghost_collide():
-        if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (176, 232, 240):
-            score[0] += 1
+        if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color_c == (176, 232, 240):
+            score[0] += 5
             kick.play()
             Ghosts_respawn()
-        if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color == (240, 184, 248):
-            score[1] += 1
+        if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85 and color_c == (240, 184, 248):
+            score[1] += 5
             kick.play()
             Ghosts_respawn()
 
     def Ghosts_respawn():
+        global game_status
+        if score[1] >= 20 or score[0] >= 20:
+            game_status = False
         if IsFullScreen:
             ghost_b.rect.x = 500
             ghost_p.rect.x = 1000
@@ -193,9 +203,14 @@ def game(IsAI):
     Ghosts_respawn()
     counter_location_x = 300
     counter_location_y = 20
+    winner_location_x = 300
+    winner_location_y = 300
     if IsFullScreen:
         counter_location_x = 750
-    
+        winner_location_x = 750
+    milisecond = 5000
+    pygame.time.set_timer(pygame.USEREVENT, milisecond)
+
     #menu config
     def continue_button():
         nonlocal menu
@@ -220,20 +235,38 @@ def game(IsAI):
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
                     run = False
-                    pygame.quit()
-                    exit()
-            pygame.draw.circle(background, color, (40, 40), 20)
+                if e.type == pygame.USEREVENT and color_c == (176, 232, 240):
+                    score[1] += 1
+                if color_c == (240, 184, 248) and e.type == pygame.USEREVENT:
+                    score[0] += 1
+                if e.type == pygame.KEYDOWN:
+                    global game_status
+                    if game_status == False:
+                        game_status = True
+                        score[1] = 0
+                        score[0] = 0
+            pygame.draw.circle(background, color_c, (40, 40), 20)
             if abs(ghost_b.rect.x - ghost_p.rect.x) < 50 and abs(ghost_b.rect.y - ghost_p.rect.y) < 85:
-                if color == (176, 232, 240):
-                    color = (240, 184, 248)
+                if color_c == (176, 232, 240):
+                    color_c = (240, 184, 248)
                 else:
-                    color = (176, 232, 240)
-            win = font.render(str('blue count') + ' ' + str(score[0]) + ':' + str(score[1]) + ' ' + str('pink count'), True,(255, 255, 255))
-            window.blit(background, (0,0))
-            ghost_collide()
-            window.blit(win,(500,500))
-            ghost_b.update()
-            ghost_p.update()
+                    color_c = (176, 232, 240)
+            if game_status == True:
+                counter = font.render(
+                    str('blue count') + ' ' + str(score[0]) + ':' + str(score[1]) + ' ' + str('pink count'), True,
+                    (255, 255, 255))
+                window.blit(background, (0, 0))
+                ghost_collide()
+                window.blit(counter, (counter_location_x, counter_location_y))
+                ghost_b.update()
+                ghost_p.update()
+            if game_status == False:
+                if score[0] >= 20:
+                    winner_b = font.render('Blue Wins', True, (176, 232, 240))
+                    window.blit(winner_b, (winner_location_x, winner_location_y))
+                elif score[1] >= 20:
+                    winner_p = font.render('Pink Wins', True, (240, 184, 248))
+                    window.blit(winner_p, (winner_location_x, winner_location_y))
         if menu.is_enabled():
             menu.update(pygame.event.get())
             menu.draw(window)
