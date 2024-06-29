@@ -3,7 +3,7 @@ import pygame
 import pygame_menu
 import pygame_menu.controls as ctrl
 
-speed = 5
+speed = 2
 volume = 1.0
 pygame.mixer.init()
 pygame.mixer.music.load('Смешарики - Тема погони.mp3')
@@ -67,17 +67,17 @@ class BlueGhost:
             self.image = self.move_left[self.index // 5]
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_a] and self.rect.x > 5:
-            self.rect.x -= speed
+            self.rect.x -= speed + 3
             self.image = self.move_left[self.index // 5]
             self.Faceid = False
         if keys_pressed[pygame.K_d] and self.rect.x < self.lock_x - 100:
-            self.rect.x += speed
+            self.rect.x += speed + 3
             self.image = self.move_right[self.index // 5]
             self.Faceid = True
         if keys_pressed[pygame.K_w] and self.rect.y > 5:
-            self.rect.y -= speed
+            self.rect.y -= speed + 3
         if keys_pressed[pygame.K_s] and self.rect.y < self.lock_y - 100:
-            self.rect.y += speed
+            self.rect.y += speed + 3
         if self.index < 39:
             self.index += 1
         else:
@@ -119,11 +119,13 @@ class PinkGhost:
 
 
 
-    def update(self):
+    def update(self,ghost_b, color_c):
         if self.Faceid:
             self.image = self.move_right[self.index // 5]
         else:
             self.image = self.move_left[self.index // 5]
+
+        '''
         keys_pressed = pygame.key.get_pressed()
         if keys_pressed[pygame.K_LEFT] and self.rect.x > 5:
             self.rect.x -= speed
@@ -137,6 +139,98 @@ class PinkGhost:
             self.rect.y -= speed
         if keys_pressed[pygame.K_DOWN] and self.rect.y < self.lock_y - 100:
             self.rect.y += speed
+        '''
+        if color_c == (240, 184, 248):
+            if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
+                '''Условие, если координата x игрока не равна координате x курсора 
+                или координата y игрока не равна координате y курсора'''
+                if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
+
+                    '''Повторяется это условие, для того, чтобы под каждое перемещение персонажа 
+                    (вверх, вниз, влево, вправо) сделать анимацию'''
+
+                    if self.rect.x >= ghost_b.rect.x and self.rect.y >= ghost_b.rect.y:
+
+                        '''Условие, если координата x игрока больше координаты x курсора 
+                    или координата y игрока больше координаты y курсора'''
+
+                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
+                        self.rect.x -= speed  # Перемещаем персонажа влево
+                        self.rect.y -= speed  # И одновременно перемещаем его вверх
+
+                    elif self.rect.x < ghost_b.rect.x and self.rect.y < ghost_b.rect.y:
+                        self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
+                        self.rect.x += speed  # Перемещаем персонажа вправо
+                        self.rect.y += speed  # И одновременно перемещаем его вниз
+
+                    elif self.rect.x < ghost_b.rect.x and self.rect.y > ghost_b.rect.y:
+                        self.image = self.move_right[self.index // 5]
+                        self.rect.x += speed  # Перемещаем персонажа вправо
+                        self.rect.y -= speed  # И одновременно перемещаем его вверх
+
+                    elif self.rect.x >= ghost_b.rect.x and self.rect.y <= ghost_b.rect.y:
+                        self.image = self.move_left[self.index // 5]
+                        self.rect.x -= speed  # Перемещаем персонажа влево
+                        self.rect.y += speed  # И одновременно перемещаем его вниз
+
+                elif self.rect.y != ghost_b.rect.y:
+                    if self.rect.y < ghost_b.rect.y:
+                        self.rect.y += speed  # Перемещаем персонажа вниз
+                    elif self.rect.y > ghost_b.rect.y:
+                        self.rect.y -= speed  # Перемещаем персонажа вверх
+                elif self.rect.x != ghost_b.rect.x:
+                    if self.rect.x < ghost_b.rect.x:
+                        self.rect.x += speed  # Перемещаем персонажа вправо
+                        self.image = self.move_right[self.index // 5] # Отрисовываем анимацию перемещения вправо
+                    elif self.rect.x> ghost_b.rect.x:
+                        self.rect.x -= speed  # Перемещаем персонажа влево
+                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
+        else:
+            if (self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y) and self.rect.x > 5 and self.rect.x < self.lock_x - 100 and self.rect.y > 5 and self.rect.y < self.lock_y - 100:
+                '''Условие, если координата x игрока не равна координате x курсора 
+                или координата y игрока не равна координате y курсора'''
+                if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
+
+                    '''Повторяется это условие, для того, чтобы под каждое перемещение персонажа 
+                    (вверх, вниз, влево, вправо) сделать анимацию'''
+
+                    if self.rect.x >= ghost_b.rect.x and self.rect.y >= ghost_b.rect.y:
+
+                        '''Условие, если координата x игрока больше координаты x курсора 
+                    или координата y игрока больше координаты y курсора'''
+
+                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
+                        self.rect.x += speed  # Перемещаем персонажа влево
+                        self.rect.y += speed  # И одновременно перемещаем его вверх
+
+                    elif self.rect.x < ghost_b.rect.x and self.rect.y < ghost_b.rect.y:
+                        self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
+                        self.rect.x -= speed  # Перемещаем персонажа вправо
+                        self.rect.y -= speed  # И одновременно перемещаем его вниз
+
+                    elif self.rect.x < ghost_b.rect.x and self.rect.y > ghost_b.rect.y:
+                        self.image = self.move_right[self.index // 5]
+                        self.rect.x -= speed  # Перемещаем персонажа вправо
+                        self.rect.y += speed  # И одновременно перемещаем его вверх
+
+                    elif self.rect.x >= ghost_b.rect.x and self.rect.y <= ghost_b.rect.y:
+                        self.image = self.move_left[self.index // 5]
+                        self.rect.x += speed  # Перемещаем персонажа влево
+                        self.rect.y -= speed  # И одновременно перемещаем его вниз
+
+                elif self.rect.y != ghost_b.rect.y:
+                    if self.rect.y < ghost_b.rect.y:
+                        self.rect.y -= speed  # Перемещаем персонажа вниз
+                    elif self.rect.y > ghost_b.rect.y:
+                        self.rect.y += speed  # Перемещаем персонажа вверх
+                elif self.rect.x != ghost_b.rect.x:
+                    if self.rect.x < ghost_b.rect.x:
+                        self.rect.x -= speed  # Перемещаем персонажа вправо
+                        self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
+                    elif self.rect.x > ghost_b.rect.x:
+                        self.rect.x += speed  # Перемещаем персонажа влево
+                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
+
         if self.index < 39:
             self.index += 1
         else:
@@ -259,7 +353,7 @@ def game(IsAI):
                 ghost_collide()
                 window.blit(counter, (counter_location_x, counter_location_y))
                 ghost_b.update()
-                ghost_p.update()
+                ghost_p.update(ghost_b, color_c)
             if game_status == False:
                 if score[0] >= 20:
                     winner_b = font.render('Blue Wins', True, (176, 232, 240))
