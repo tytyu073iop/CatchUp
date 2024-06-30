@@ -1,6 +1,7 @@
 import pygame
 import pygame_menu
 import game
+import Global_variables
 import json
 ##########################
 ##########################
@@ -10,12 +11,12 @@ surface = pygame.display.set_mode((500, 500))
 menu = pygame_menu.Menu('Catch Up!', 500, 500)
 
 def FSChange(state, **kwargs):#Изменение полного экрана
-    game.IsFullScreen = state
+    Global_variables.IsFullScreen = state
     print("switched: Full screen", game.IsFullScreen, state)
 
 
 def VChange(state, **kwargs):#Изменение V-Sync
-    game.IsVSync = state
+    Global_variables.IsVSync = state
 
 
 def ChangeBot(state, **kwargs):
@@ -25,12 +26,12 @@ def ChangeBot(state, **kwargs):
 
 def changeSpeed(value, *args, **kwargs):#Изменение скорости игры
     print(args, kwargs)
-    game.speed = (value[1] + 1) * 5
+    Global_variables.speed = (value[1] + 1) * 5
 
 
 def changeVolume(val, *args, **kwargs):#Изменение звука
     print(args, kwargs)
-    game.volume = (val[1] + 1)/10
+    Global_variables.volume = (val[1] + 1)/10
     pygame.mixer.music.set_volume(game.volume)
 
 
