@@ -337,6 +337,7 @@ def game(IsAI):
         if run:
             for e in pygame.event.get():
                 if e.type == pygame.QUIT:
+                    sys.exit()
                     run = False
                 if e.type == pygame.USEREVENT and color_c == (176, 232, 240):
                     jud.increase(TeamMember.pink.value, 1)
