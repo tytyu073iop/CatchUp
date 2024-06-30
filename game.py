@@ -13,6 +13,7 @@ class TeamMember(Enum):
     blue = 'Blue'
     pink = 'Pink'
 
+sco = score.Score((TeamMember.blue.value, TeamMember.pink.value), 'score.json')
 speed = 5
 volume = 1.0
 #
@@ -229,7 +230,7 @@ class PinkGhost:
 
 # starts from menu
 def game(IsAI):
-    sco = score.Score((TeamMember.blue.value, TeamMember.pink.value), 'score.json')
+    
     jud = judge.Judge(sco)
     pygame.mixer.music.set_volume(volume)
     global Resolution

@@ -5,7 +5,9 @@ import copy
 class Score:
     def __init__(self, members, filename = ''):
         self.members = members
+        # as public
         self.score = {}
+        # as public
         self.scores = []
         for member in members:
             self.score[member] = 0

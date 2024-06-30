@@ -63,12 +63,12 @@ menu.add.selector('Чуствительность', lr, onchange=changeSpeed, de
 
 menu.add.selector('Звук', ln, onchange=changeVolume, default=8)#Громкость звука
 
-# table = menu.add.table()
-# sc = json.load(open('score.json', 'r'))
-# table.add_row(['Blue', 'Pink'])
-# for i in sc:
-#     table.add_row([str(i['Blue']), str(i['Pink'])])
-#
+table = menu.add.table()
+sc = game.sco.scores
+table.add_row(['Blue', 'Pink'])
+for i in sc:
+    table.add_row([str(i['Blue']), str(i['Pink'])])
+
 pygame.display.set_caption("Догонялки-Убегалки")
 #############################
 menu.add.button('Играть', game.game, False)
