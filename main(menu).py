@@ -33,6 +33,10 @@ def changeVolume(val, *args, **kwargs):#Изменение звука
     game.volume = (val[1] + 1)/10
     pygame.mixer.music.set_volume(game.volume)
 
+def changeDifficulty(value, *args, **kwargs):
+    print(args, kwargs)
+    game.difficuly = (args[0])
+
 
 
 ############################################Список для скорости игры
@@ -62,6 +66,11 @@ menu.add.selector('Чуствительность', lr, onchange=changeSpeed, de
 #$$$$$$$$$$$$$$$$$$
 
 menu.add.selector('Звук', ln, onchange=changeVolume, default=8)#Громкость звука
+
+#################
+
+menu.add.selector('Сложность', [('Средне', 1),
+                                 ('Тяжело', 2)], onchange=changeDifficulty, default=0)
 
 table = menu.add.table()
 sc = game.sco.scores

@@ -13,6 +13,7 @@ class TeamMember(Enum):
     blue = 'Blue'
     pink = 'Pink'
 
+difficuly = 1
 sco = score.Score((TeamMember.blue.value, TeamMember.pink.value), 'score.json')
 speed = 5
 volume = 1.0
@@ -169,63 +170,64 @@ class PinkGhost:
             else:
                 self.index = 0
         else:###############################
-            if B_C:
-                if B_x > P_x:
-                    if self.rect.x > 5 and self.moving == 19:
-                        moving_left(self)
-                        P_x -= speed
-                    else:
-                        if self.moving > 0:
-                            self.moving -= 1
+            for i in range(difficuly):
+                if B_C:
+                    if B_x > P_x:
+                        if self.rect.x > 5 and self.moving == 19:
+                            moving_left(self)
+                            P_x -= speed
+                        else:
+                            if self.moving > 0:
+                                self.moving -= 1
+                                moving_right(self)
+                            else:
+                                self.moving = 19
+                    elif B_x < P_x:
+                        if self.rect.x < self.lock_x - 100 and self.moving == 19:
                             moving_right(self)
                         else:
-                            self.moving = 19
-                elif B_x < P_x:
-                    if self.rect.x < self.lock_x - 100 and self.moving == 19:
-                        moving_right(self)
-                    else:
-                        if self.moving > 0:
-                            self.moving -= 1
-                            moving_left(self)
-                        else:
-                            self.moving = 19
-                if B_y < P_y:
-                    if self.rect.y < self.lock_y - 100 and self.moving == 19:
-                        moving_down(self)
-                    else:
-                        if self.moving > 0:
-                            self.moving -= 1
-                            moving_up(self)
-                        else:
-                            self.moving = 19
-                elif B_y > P_y:
-                    if self.rect.y > 5 and self.moving == 19:
-                        moving_up(self)
-                    else:
-                        if self.moving > 0:
-                            self.moving -= 1
+                            if self.moving > 0:
+                                self.moving -= 1
+                                moving_left(self)
+                            else:
+                                self.moving = 19
+                    if B_y < P_y:
+                        if self.rect.y < self.lock_y - 100 and self.moving == 19:
                             moving_down(self)
                         else:
-                            self.moving = 19
-            else:
-                speed /= 1.5
-                if B_x > P_x:
-                    moving_right(self)
-                    P_x += speed
+                            if self.moving > 0:
+                                self.moving -= 1
+                                moving_up(self)
+                            else:
+                                self.moving = 19
+                    elif B_y > P_y:
+                        if self.rect.y > 5 and self.moving == 19:
+                            moving_up(self)
+                        else:
+                            if self.moving > 0:
+                                self.moving -= 1
+                                moving_down(self)
+                            else:
+                                self.moving = 19
                 else:
-                    moving_left(self)
-                    P_x -= speed
-                if B_y > P_y:
-                    moving_down(self)
-                    P_y += speed
+                    speed /= 1.5
+                    if B_x > P_x:
+                        moving_right(self)
+                        P_x += speed
+                    else:
+                        moving_left(self)
+                        P_x -= speed
+                    if B_y > P_y:
+                        moving_down(self)
+                        P_y += speed
+                    else:
+                        moving_up(self)
+                        P_y -= speed
+                    speed *= 1.5
+                if self.index < 39:
+                    self.index += 1
                 else:
-                    moving_up(self)
-                    P_y -= speed
-                speed *= 1.5
-            if self.index < 39:
-                self.index += 1
-            else:
-                self.index = 0
+                    self.index = 0
         self.window.blit(self.image, self.rect)
 
 # starts from menu
