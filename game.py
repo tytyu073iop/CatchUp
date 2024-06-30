@@ -14,8 +14,7 @@ clock = pygame.time.Clock()
 FPS = 45
 run = True
 finish = False
-width = 100
-height = 100
+
 score = [0,0]
 IsFullScreen = False
 IsVSync = False
@@ -26,14 +25,18 @@ Blue_ghost_spawn_point_y = 100
 Pink_ghost_spawn_point_y = 100
 color = (0,0,255)
 game_status = True
+width = 100
+height = 100
 
 class BlueGhost:
     def __init__(self, window, transfotm=None):
+        global width
+        global height
         self.index = 0
         self.width = 100
         self.height = 100
-        self.move_right = [
-    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(self.width, height)),
+        self.move_right  = [
+    pygame.transform.scale(pygame.image.load('BlueGhost_1.png'),(width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'),(width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
@@ -41,7 +44,6 @@ class BlueGhost:
     pygame.transform.scale(pygame.image.load('BlueGhost_1.png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
     pygame.transform.scale(pygame.image.load('BlueGhost_2.png'), (width, height)),
-
 ]
         self.move_left = [
     pygame.transform.scale(pygame.image.load('BlueGhost_1(L).png'),(width, height)),
@@ -82,9 +84,6 @@ class BlueGhost:
             self.index += 1
         else:
             self.index = 0
-        if IsFullScreen:
-            self.height = 50  # height * 600/y
-            self.width = 50  # width * 1000/x
         self.window.blit(self.image, self.rect)
 
 # same as previous
@@ -140,96 +139,50 @@ class PinkGhost:
         if keys_pressed[pygame.K_DOWN] and self.rect.y < self.lock_y - 100:
             self.rect.y += speed
         '''
-        if color_c == (240, 184, 248):
+        if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
+            '''Условие, если координата x игрока не равна координате x курсора 
+            или координата y игрока не равна координате y курсора'''
             if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
-                '''Условие, если координата x игрока не равна координате x курсора 
-                или координата y игрока не равна координате y курсора'''
-                if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
 
-                    '''Повторяется это условие, для того, чтобы под каждое перемещение персонажа 
-                    (вверх, вниз, влево, вправо) сделать анимацию'''
+                '''Повторяется это условие, для того, чтобы под каждое перемещение персонажа 
+                (вверх, вниз, влево, вправо) сделать анимацию'''
 
-                    if self.rect.x >= ghost_b.rect.x and self.rect.y >= ghost_b.rect.y:
+                if self.rect.x >= ghost_b.rect.x and self.rect.y >= ghost_b.rect.y:
 
-                        '''Условие, если координата x игрока больше координаты x курсора 
-                    или координата y игрока больше координаты y курсора'''
+                    '''Условие, если координата x игрока больше координаты x курсора 
+                или координата y игрока больше координаты y курсора'''
 
-                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
-                        self.rect.x -= speed  # Перемещаем персонажа влево
-                        self.rect.y -= speed  # И одновременно перемещаем его вверх
+                    self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
+                    self.rect.x -= speed  # Перемещаем персонажа влево
+                    self.rect.y -= speed  # И одновременно перемещаем его вверх
 
-                    elif self.rect.x < ghost_b.rect.x and self.rect.y < ghost_b.rect.y:
-                        self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
-                        self.rect.x += speed  # Перемещаем персонажа вправо
-                        self.rect.y += speed  # И одновременно перемещаем его вниз
+                elif self.rect.x < ghost_b.rect.x and self.rect.y < ghost_b.rect.y:
+                    self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
+                    self.rect.x += speed  # Перемещаем персонажа вправо
+                    self.rect.y += speed  # И одновременно перемещаем его вниз
 
-                    elif self.rect.x < ghost_b.rect.x and self.rect.y > ghost_b.rect.y:
-                        self.image = self.move_right[self.index // 5]
-                        self.rect.x += speed  # Перемещаем персонажа вправо
-                        self.rect.y -= speed  # И одновременно перемещаем его вверх
+                elif self.rect.x < ghost_b.rect.x and self.rect.y > ghost_b.rect.y:
+                    self.image = self.move_right[self.index // 5]
+                    self.rect.x += speed  # Перемещаем персонажа вправо
+                    self.rect.y -= speed  # И одновременно перемещаем его вверх
 
-                    elif self.rect.x >= ghost_b.rect.x and self.rect.y <= ghost_b.rect.y:
-                        self.image = self.move_left[self.index // 5]
-                        self.rect.x -= speed  # Перемещаем персонажа влево
-                        self.rect.y += speed  # И одновременно перемещаем его вниз
+                elif self.rect.x >= ghost_b.rect.x and self.rect.y <= ghost_b.rect.y:
+                    self.image = self.move_left[self.index // 5]
+                    self.rect.x -= speed  # Перемещаем персонажа влево
+                    self.rect.y += speed  # И одновременно перемещаем его вниз
 
-                elif self.rect.y != ghost_b.rect.y:
-                    if self.rect.y < ghost_b.rect.y:
-                        self.rect.y += speed  # Перемещаем персонажа вниз
-                    elif self.rect.y > ghost_b.rect.y:
-                        self.rect.y -= speed  # Перемещаем персонажа вверх
-                elif self.rect.x != ghost_b.rect.x:
-                    if self.rect.x < ghost_b.rect.x:
-                        self.rect.x += speed  # Перемещаем персонажа вправо
-                        self.image = self.move_right[self.index // 5] # Отрисовываем анимацию перемещения вправо
-                    elif self.rect.x> ghost_b.rect.x:
-                        self.rect.x -= speed  # Перемещаем персонажа влево
-                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
-        else:
-            if (self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y) and self.rect.x > 5 and self.rect.x < self.lock_x - 100 and self.rect.y > 5 and self.rect.y < self.lock_y - 100:
-                '''Условие, если координата x игрока не равна координате x курсора 
-                или координата y игрока не равна координате y курсора'''
-                if self.rect.x != ghost_b.rect.x or self.rect.y != ghost_b.rect.y:
-
-                    '''Повторяется это условие, для того, чтобы под каждое перемещение персонажа 
-                    (вверх, вниз, влево, вправо) сделать анимацию'''
-
-                    if self.rect.x >= ghost_b.rect.x and self.rect.y >= ghost_b.rect.y:
-
-                        '''Условие, если координата x игрока больше координаты x курсора 
-                    или координата y игрока больше координаты y курсора'''
-
-                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
-                        self.rect.x += speed  # Перемещаем персонажа влево
-                        self.rect.y += speed  # И одновременно перемещаем его вверх
-
-                    elif self.rect.x < ghost_b.rect.x and self.rect.y < ghost_b.rect.y:
-                        self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
-                        self.rect.x -= speed  # Перемещаем персонажа вправо
-                        self.rect.y -= speed  # И одновременно перемещаем его вниз
-
-                    elif self.rect.x < ghost_b.rect.x and self.rect.y > ghost_b.rect.y:
-                        self.image = self.move_right[self.index // 5]
-                        self.rect.x -= speed  # Перемещаем персонажа вправо
-                        self.rect.y += speed  # И одновременно перемещаем его вверх
-
-                    elif self.rect.x >= ghost_b.rect.x and self.rect.y <= ghost_b.rect.y:
-                        self.image = self.move_left[self.index // 5]
-                        self.rect.x += speed  # Перемещаем персонажа влево
-                        self.rect.y -= speed  # И одновременно перемещаем его вниз
-
-                elif self.rect.y != ghost_b.rect.y:
-                    if self.rect.y < ghost_b.rect.y:
-                        self.rect.y -= speed  # Перемещаем персонажа вниз
-                    elif self.rect.y > ghost_b.rect.y:
-                        self.rect.y += speed  # Перемещаем персонажа вверх
-                elif self.rect.x != ghost_b.rect.x:
-                    if self.rect.x < ghost_b.rect.x:
-                        self.rect.x -= speed  # Перемещаем персонажа вправо
-                        self.image = self.move_right[self.index // 5]  # Отрисовываем анимацию перемещения вправо
-                    elif self.rect.x > ghost_b.rect.x:
-                        self.rect.x += speed  # Перемещаем персонажа влево
-                        self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
+            elif self.rect.y != ghost_b.rect.y:
+                if self.rect.y < ghost_b.rect.y:
+                    self.rect.y += speed  # Перемещаем персонажа вниз
+                elif self.rect.y > ghost_b.rect.y:
+                    self.rect.y -= speed  # Перемещаем персонажа вверх
+            elif self.rect.x != ghost_b.rect.x:
+                if self.rect.x < ghost_b.rect.x:
+                    self.rect.x += speed  # Перемещаем персонажа вправо
+                    self.image = self.move_right[self.index // 5] # Отрисовываем анимацию перемещения вправо
+                elif self.rect.x> ghost_b.rect.x:
+                    self.rect.x -= speed  # Перемещаем персонажа влево
+                    self.image = self.move_left[self.index // 5]  # Отрисовываем анимацию перемещения влево
 
         if self.index < 39:
             self.index += 1
@@ -262,7 +215,7 @@ def game(IsAI):
         'PINCK WIN"S ', True, (250, 192, 203)
     )
 
-    ghost_b = BlueGhost(window)
+    ghost_b = BlueGhost(window,)
     ghost_p = PinkGhost(window)
     kick = pygame.mixer.Sound('for-karl_-made-with-Voicemod.ogg')
     kick.set_volume(volume)
@@ -281,6 +234,8 @@ def game(IsAI):
 
     def Ghosts_respawn():
         global game_status
+        global width
+        global height
         if score[1] >= 20 or score[0] >= 20:
             game_status = False
         if IsFullScreen:
@@ -288,6 +243,7 @@ def game(IsAI):
             ghost_p.rect.x = 1000
             ghost_b.rect.y = 500
             ghost_p.rect.y = 100
+
         else:
             ghost_b.rect.x = 100
             ghost_p.rect.x = 600
@@ -316,7 +272,6 @@ def game(IsAI):
     menu.disable()
     menu.add.button('continue', continue_button)
     menu.add.button('Exit', pygame_menu.events.EXIT)
-
     # game cycle
     while True:
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
